@@ -10,6 +10,8 @@
         QPDIndec.m
         SparseMat.m
         StdCat.m
+        IdemCalcHelpers.m
+        IdemCalc.m
     }
     IHecke
     {
