@@ -12,6 +12,8 @@
         StdCat.m
         IdemCalcHelpers.m
         IdemCalc.m
+        IdemCalcOptHelpers.m
+        IdemCalcOpt.m
     }
     IHecke
     {
