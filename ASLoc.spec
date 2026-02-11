@@ -14,6 +14,7 @@
         IdemCalc.m
         IdemCalcOptHelpers.m
         IdemCalcOpt.m
+        Trace.m
     }
     IHecke
     {

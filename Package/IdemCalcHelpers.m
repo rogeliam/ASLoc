@@ -249,56 +249,10 @@ end intrinsic;
 // Subexpression Enumeration
 //============================================================================
 
-// Finds all subexpressions of (x_seq cat w_seq) that represent element y
-// with the specified degree.
-// WARNING: This uses brute-force enumeration over all 2^n subexpressions.
-// For long words,we may need to optimize
+// Finds all subexpressions of (Eltseq(x) cat Eltseq(w)) that evaluate to y
+// with the specified Deodhar defect degree.
 function find_all_light_leaves_expressions(W, x, w, y : degree := 0)
-    x_seq := Eltseq(x);
-    w_seq := Eltseq(w);
-    n := #x_seq + #w_seq;
-    results := [];
-
-    // Enumerate all 2^n subexpressions (O(2^n) complexity)
-    for i in [0..2^n - 1] do
-        bits := [];
-        temp := i;
-        for j in [1..n] do
-            Append(~bits, temp mod 2);
-            temp := temp div 2;
-        end for;
-
-        full_word := x_seq cat w_seq;
-
-        subword := [];
-        for j in [1..n] do
-            if bits[j] eq 1 then
-                Append(~subword, full_word[j]);
-            end if;
-        end for;
-
-        if W!subword eq y then
-            u := Id(W);
-            d := 0;
-            for j in [1..n] do
-                w_j := full_word[j];
-                if bits[j] eq 1 then
-                    u := u * W![w_j];
-                end if;
-                if bits[j] eq 0 then
-                    if Length(u) lt Length(u * W![w_j]) then
-                        d := d + 1;
-                    else
-                        d := d - 1;
-                    end if;
-                end if;
-            end for;
-
-            if d eq degree then
-                Append(~results, <bits, d>);
-            end if;
-        end if;
-    end for;
-
-    return results;
+    bsword := Eltseq(x) cat Eltseq(w);
+    subexps := SubexpressionsEvaluatingTo(W, bsword, y);
+    return [<e, degree> : e in subexps | DeodharDefect(W, bsword, e) eq degree];
 end function;
