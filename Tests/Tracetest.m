@@ -267,12 +267,13 @@ procedure H3_long_trace()
     root := (9*f.1+6)/2*FR.1 + (5*f.1+4)*FR.2 + (5*f.1+5)/2*FR.3;
     k := 6;
 
-    //Manual setting of 01-expressions
-    expr_x := [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,];
-    // d,d -> d: 1's on first d, then 11110000011110 on second d
-    expr_d := [1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,0,0,0,0,0,1,1,1,1,0];
+    //Manual setting of 01-expressions, x,d -> x
+    //expr_x := [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0];
+    // x,x -> d:
+    expr_d := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0 ];
 
-    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k, Expr := [expr_x]);
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    //trace_x := OptTrace(IC, root, x_word, z_word, x_word, k : Expr := [expr_x]);
     printf "H3_long: trace(x) = %o\n", trace_x;
 
     trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Expr := [expr_d]);
@@ -386,13 +387,14 @@ procedure H4_middle_1_trace()
     root := (42*f.1+26)*FR.1 + (51*f.1+33)*FR.2 + (34*f.1+23)*FR.3 + (17*f.1+12)*FR.4;
     k := 6;
 
-    expr_x := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0 ];
-    expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
+    expr_x := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 ];
+    //expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
 
-    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k  : Exps := [expr_x] );
     printf "H4_middle_1: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
     printf "H4_middle_1: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x ne 0 then
@@ -405,13 +407,14 @@ procedure H4_middle_1_trace()
     x_word := [2,3,2,4,3,2,1,2,3,4,1,2,3,4];
     xdual_word := [2,3,2,4,3,2,1,2,3,4,1,2,3,4];
 
-    expr_x := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 ];
-    expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
+    //Find right expression to make it faster
 
+    trace_x := OptTrace(IC, root, x_word, xdual_word, z_word, k);
     trace_x := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exprs := [expr_x]);
     printf "H4_middle_1: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, z_word, Reverse(z_word), z_word, k : Exprs := [expr_d]);
+    trace_d := OptTrace(IC, root, z_word, Reverse(z_word), z_word, k);
+    //trace_d := OptTrace(IC, root, z_word, Reverse(z_word), z_word, k : Exprs := [expr_d]);
     printf "H4_middle_1: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x ne 0 then
@@ -461,14 +464,15 @@ procedure H4_middle_9_trace()
     root := (42*f.1+26)*FR.1 + (51*f.1+33)*FR.2 + (34*f.1+23)*FR.3 + (17*f.1+12)*FR.4;
     k := 6;
 
-    //
-    expr_x := [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0];
-    expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
+    //These are wrong. find right expressions
+    //expr_x := [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0];
+    //expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
 
     trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
     printf "H4_middle_9: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
     printf "H4_middle_9: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x ne 0 then
@@ -518,15 +522,15 @@ procedure H4_middle_19_trace()
     k := 6;
 
     // d,d -> d: 1's on first d, then 11110000011110 on second d (same as H3_long)
-    expr_d := [1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,0,0,0,0,0,1,1,1,1,0];
+    //expr_d := [1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,0,0,0,0,0,1,1,1,1,0];
 
     // Trace for x1 = 1212132121
     x1_word := [1,2,1,2,1,3,2,1,2,1];
     xdual1_word := [1,2,1,2,1,3,2,1,2,1];
     // x1,xdual1 -> d: 1's on x1, then 0000111100 on xdual1 (same as H3_long)
-    expr_x1 := [1,1,1,1,1,1,1,1,1,1, 0,0,0,0,1,1,1,1,0,0];
+    //expr_x1 := [1,1,1,1,1,1,1,1,1,1, 0,0,0,0,1,1,1,1,0,0];
 
-    trace_x1 := OptTrace(IC, root, x1_word, z_word, x1_word, k : Exprs := [expr_x1]);
+    trace_x1 := OptTrace(IC, root, x1_word, z_word, x1_word, k);
     //trace_x1 := OptTrace(IC, root, x1_word, xdual1_word, z_word, k : Exprs := [expr_x1]);
     printf "H4_middle_19: trace(x1) = %o\n", trace_x1;
 
@@ -534,12 +538,14 @@ procedure H4_middle_19_trace()
     x3_word := [1,2,1,2,1,3,2,1,2,1,4,3,2,1,2,1];
     xdual3_word := [1,2,1,2,1,3,2,1,2,1,4,3,2,1,2,1];
     // x3,xdual3 -> d: 1's on x3, then 1111110000111100 on xdual3
-    expr_x3 := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 ];
+    //expr_x3 := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 ];
 
-    trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k : Exprs := [expr_x3]);
+    trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k);
+    //trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k : Exprs := [expr_x3]);
     printf "H4_middle_19: trace(x3) = %o\n", trace_x3;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
     printf "H4_middle_19: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x1 ne 0 then
