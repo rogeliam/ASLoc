@@ -267,16 +267,16 @@ procedure H3_long_trace()
     root := (9*f.1+6)/2*FR.1 + (5*f.1+4)*FR.2 + (5*f.1+5)/2*FR.3;
     k := 6;
 
-    //Manual setting of 01-expressions, x,d -> x
-    //expr_x := [1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0];
+    //Manual setting of 01-expressions, d,x -> x
+    expr_x := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0 ];
     // x,x -> d:
-    expr_d := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0 ];
+    expr_d :=  [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0 ];
 
-    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
-    //trace_x := OptTrace(IC, root, x_word, z_word, x_word, k : Expr := [expr_x]);
+    //trace_x := OptTrace(IC, root, z_word, x_word, x_word, k);
+    trace_x := OptTrace(IC, root, z_word, x_word, x_word, k : Exprs := [expr_x]);
     printf "H3_long: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Expr := [expr_d]);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exprs := [expr_d]);
     //trace_d := OptTrace(IC, root, z_word, Reverse(z_word), z_word, k : Exprs := [expr_d]);
     printf "H3_long: trace(d) = %o\n", trace_d;
 
@@ -388,13 +388,13 @@ procedure H4_middle_1_trace()
     k := 6;
 
     expr_x := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 ];
-    //expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
+    expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
 
-    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k  : Exps := [expr_x] );
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k  : Exprs := [expr_x] );
     printf "H4_middle_1: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
-    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exprs := [expr_d]);
     printf "H4_middle_1: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x ne 0 then
@@ -464,15 +464,15 @@ procedure H4_middle_9_trace()
     root := (42*f.1+26)*FR.1 + (51*f.1+33)*FR.2 + (34*f.1+23)*FR.3 + (17*f.1+12)*FR.4;
     k := 6;
 
-    //These are wrong. find right expressions
-    //expr_x := [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0];
-    //expr_d := [1,1,1,1,1,1, 0,0,0,0,0,0];
+    //These should be correct
+    expr_x :=  [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1 ];
+    expr_d := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0 ];
 
-    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    trace_x := OptTrace(IC, root, z_word, x_word, x_word, k:  Exprs := [expr_x]);
     printf "H4_middle_9: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
-    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exprs := [expr_d]);
     printf "H4_middle_9: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x ne 0 then
@@ -521,17 +521,16 @@ procedure H4_middle_19_trace()
     root := (42*f.1+26)*FR.1 + (51*f.1+33)*FR.2 + (34*f.1+23)*FR.3 + (17*f.1+12)*FR.4;
     k := 6;
 
-    // d,d -> d: 1's on first d, then 11110000011110 on second d (same as H3_long)
-    //expr_d := [1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,0,0,0,0,0,1,1,1,1,0];
-
-    // Trace for x1 = 1212132121
+    // Trace for x1 = 1212132121. Same as in H3 case
     x1_word := [1,2,1,2,1,3,2,1,2,1];
     xdual1_word := [1,2,1,2,1,3,2,1,2,1];
-    // x1,xdual1 -> d: 1's on x1, then 0000111100 on xdual1 (same as H3_long)
-    //expr_x1 := [1,1,1,1,1,1,1,1,1,1, 0,0,0,0,1,1,1,1,0,0];
 
-    trace_x1 := OptTrace(IC, root, x1_word, z_word, x1_word, k);
-    //trace_x1 := OptTrace(IC, root, x1_word, xdual1_word, z_word, k : Exprs := [expr_x1]);
+
+    expr_x1 := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0 ];
+    // x,x -> d:
+    expr_d :=  [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0 ];
+
+    trace_x1 := OptTrace(IC, root, z_word, x1_word, x1_word, k : Exprs := [expr_x1]);
     printf "H4_middle_19: trace(x1) = %o\n", trace_x1;
 
     // Trace for x3 = 1212132121432121
@@ -544,7 +543,7 @@ procedure H4_middle_19_trace()
     //trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k : Exprs := [expr_x3]);
     printf "H4_middle_19: trace(x3) = %o\n", trace_x3;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    trace_d := OptTrace(IC, root, z_word, x1_word, z_word, k);
     //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
     printf "H4_middle_19: trace(d) = %o\n", trace_d;
 
@@ -593,14 +592,16 @@ procedure F4_trace()
     k := 4;
     //The idempotents created should have the word 13432134, therefore we need different expression
 
-    expr_x := [1,1,1,1,1,1,1,1,1,0,1,1,1,0,0,0];
+    //expr_x := [1,1,1,1,1,0,1,1,1,0,0,0];
 
-    expr_d := [1,1,1,1, 0,0,0,0];
+    //expr_d := [1,1,1,1, 0,0,0,0];
 
-    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k : Exprs := [expr_x]);
+    trace_x := OptTrace(IC, root, z_word, x_word, x_word, k );
+    //trace_x := OptTrace(IC, root, z_word, x_word, x_word, k : Exprs := [expr_x]);
     printf "F4: trace(x) = %o\n", trace_x;
 
-    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
     printf "F4: trace(d) = %o\n", trace_d;
 
     if trace_d ne 0 and trace_x ne 0 then
