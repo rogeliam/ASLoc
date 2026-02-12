@@ -14,9 +14,9 @@ act := function(w)
 end function;
 
 IC := CreateOptIdemCollection(B, C, act);
-
-// Compute idempotent for element [2,4,1,3,2,4] (length 6)
-x := W![2,4,1,3,2,4];
+SetShowProgress(IC,true);
+// Compute idempotent for element [2,4,1,3,2,4,1,3,2,4,1,3,2,4] (length 14)
+x := W![2,4,1,3,2,4,1,3,2,4,1,3,2,4];
 printf "Computing optimized idempotent for x = %o (length %o)\n", Eltseq(x), #Eltseq(x);
 
 t := Cputime();
