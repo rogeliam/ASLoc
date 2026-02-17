@@ -536,8 +536,14 @@ procedure H4_middle_19_trace()
     printf "H4_middle_19: trace(x1) = %o\n", trace_x1;
 
     trace_d := OptTrace(IC, root, x1_word, xdual1_word, z_word, k : Exprs := [expr_d]);
-    //trace_d := OptTrace(IC, root, z_word, Reverse(z_word), z_word, k : Exprs := [expr_d]);
+
     printf "H4_middle_19: trace(d) = %o\n", trace_d;
+
+    if trace_d ne 0 and trace_x1 ne 0 then
+        printf "H4_middle_19: dim(x1) = %o\n", trace_d / trace_x1;
+    else
+        printf "H4_middle_19: x1 trace is zero, cannot compute dimension\n";
+    end if;
 
     // Trace for x3 = 1212132121432121
     x3_word := [1,2,1,2,1,3,2,1,2,1,4,3,2,1,2,1];
@@ -546,19 +552,13 @@ procedure H4_middle_19_trace()
     expr_d := [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 0 ];
 
-    trace_x3 := OptTrace(IC, root, z_word, x3_word, x3_word, k);
-    //trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k : Exprs := [expr_x3]);
+    //trace_x3 := OptTrace(IC, root, z_word, x3_word, x3_word, k);
+    trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k : Exprs := [expr_x3]);
     printf "H4_middle_19: trace(x3) = %o\n", trace_x3;
 
-    trace_d := OptTrace(IC, root, z_word, x1_word, z_word, k);
-    //trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k : Exps := [expr_d]);
+    trace_d := OptTrace(IC, root, x3_word, x3dual_word, z_word k : Exps := [expr_d]);
     printf "H4_middle_19: trace(d) = %o\n", trace_d;
 
-    if trace_d ne 0 and trace_x1 ne 0 then
-        printf "H4_middle_19: dim(x1) = %o\n", trace_d / trace_x1;
-    else
-        printf "H4_middle_19: x1 trace is zero, cannot compute dimension\n";
-    end if;
 
     if trace_d ne 0 and trace_x3 ne 0 then
         printf "H4_middle_19: dim(x3) = %o\n", trace_d / trace_x3;
