@@ -58,6 +58,7 @@ declare attributes OptIdemCollection:
     CanBasis,               // The canonical basis
     IdempotentCache,        // Cache for OptIdempotent objects
     LightLeaveCache,        // Cache for reduced light leaves
+    LocalIntersectionForms, // Cache for LIF coefficients: key = [xs_seq, y_seq], value = k
     // Progress tracking. Only for nicer printing
     ShowProgress,           // BoolElt: Whether to show progress
     RecursionStack,         // SeqEnum: Stack of [element, length] being computed
@@ -78,6 +79,7 @@ intrinsic CreateOptIdemCollection(B::BSCat, C::., act::UserProgram : ShowProgres
     IC`CanBasis := C;
     IC`IdempotentCache := AssociativeArray();
     IC`LightLeaveCache := AssociativeArray();
+    IC`LocalIntersectionForms := AssociativeArray();
     // Initialize progress tracking
     IC`ShowProgress := ShowProgress;
     IC`RecursionStack := [];
@@ -94,8 +96,8 @@ end intrinsic;
 
 intrinsic Print(IC::OptIdemCollection)
 {Print an optimized idempotent collection}
-    printf "Optimized idempotent collection for %o with %o cached idempotents and %o cached light leaves",
-        IC`B, #Keys(IC`IdempotentCache), #Keys(IC`LightLeaveCache);
+    printf "Optimized idempotent collection for %o with %o cached idempotents, %o cached light leaves, and %o LIF coefficients",
+        IC`B, #Keys(IC`IdempotentCache), #Keys(IC`LightLeaveCache), #Keys(IC`LocalIntersectionForms);
     if IC`TotalLightLeafTime gt 0 then
         printf " (total LL time: %.2os)", IC`TotalLightLeafTime;
     end if;
@@ -105,6 +107,7 @@ intrinsic ClearCache(IC::OptIdemCollection)
 {Clear all caches}
     IC`IdempotentCache := AssociativeArray();
     IC`LightLeaveCache := AssociativeArray();
+    IC`LocalIntersectionForms := AssociativeArray();
 end intrinsic;
 
 intrinsic ClearIdempotentCache(IC::OptIdemCollection)
@@ -141,6 +144,25 @@ intrinsic CachedIdempotents(IC::OptIdemCollection) -> SeqEnum
 {Return the list of cached idempotent elements}
     W := IC`W;
     return [W!k : k in Keys(IC`IdempotentCache)];
+end intrinsic;
+
+intrinsic PrintLocalIntersectionForms(IC::OptIdemCollection)
+{Print all stored local intersection form coefficients in (x, s, y, k) format}
+    W := IC`W;
+    printf "Local Intersection Form Coefficients:\n";
+    printf "====================================\n";
+    for key in Keys(IC`LocalIntersectionForms) do
+        y_seq := key[1];
+        s_seq := key[2];
+        w_seq := key[3];
+        k := IC`LocalIntersectionForms[key];
+        y := W ! y_seq;
+        s := W ! s_seq;
+        w := W ! w_seq;
+        xs := y * s;
+        printf "  (%o, %o, %o) -> %o\n", xs, s, w, k;
+    end for;
+    printf "\nTotal: %o coefficients stored\n", #Keys(IC`LocalIntersectionForms);
 end intrinsic;
 
 intrinsic GetReducedMatrix(opt::OptIdempotent) -> StdMor
@@ -281,6 +303,10 @@ function build_optimized_idempotent_internal(IC, x)
 
             byw := dys_w * uys_w;
             kw_ys := byw`mat[1,1] / opt_ew`reduced_matrix`mat[1,1];
+
+            // Store the local intersection form coefficient
+            lif_key := <Eltseq(y), Eltseq(s), Eltseq(w)>;
+            IC`LocalIntersectionForms[lif_key] := kw_ys;
 
             correction := (1/kw_ys) * (uys_w * dys_w);
             eys := eys - correction;
