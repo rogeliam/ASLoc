@@ -159,8 +159,7 @@ intrinsic PrintLocalIntersectionForms(IC::OptIdemCollection)
         y := W ! y_seq;
         s := W ! s_seq;
         w := W ! w_seq;
-        xs := y * s;
-        printf "  (%o, %o, %o) -> %o\n", xs, s, w, k;
+        printf "  (%o, %o, %o) -> %o\n", y, s, w, k;
     end for;
     printf "\nTotal: %o coefficients stored\n", #Keys(IC`LocalIntersectionForms);
 end intrinsic;
