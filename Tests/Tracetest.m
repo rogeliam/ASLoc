@@ -622,3 +622,209 @@ procedure F4_trace()
     S := GetMaximumMemoryUsage();
     printf "F4: Time = %o, Space = %o\n\n", T, S;
 end procedure;
+
+//============================================================================
+// B4: All cells (2, 3, 5, 8, 9)
+//============================================================================
+procedure B4_trace()
+    ResetMaximumMemoryUsage();
+    T := Time();
+
+    cartanMat := CartanMatrix("B4");
+    W := CoxeterGroup(GrpFPCox, cartanMat);
+    B := BSCategory(CartanMatrix("B4"), W);
+    FR := B`FR;
+
+    HAlg := IHeckeAlgebra(W);
+    C := CanonicalBasis(HAlg);
+
+    act := function(w)
+        return FActionByElt(B, w);
+    end function;
+
+    IC := CreateOptIdemCollection(B, C, act);
+    root := (9/2)*FR.1 + 4*FR.2 + (7/2)*FR.3 + (3/2)*FR.4;
+
+    // Cell 2 (a-value 1)
+    printf "=== B4 Cell 2 (a-value 1) ===\n";
+    x_word := [3,4,3];
+    z_word := [3];
+    k := 1;
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "B4_cell2: trace(x) = %o\n", trace_x;
+    trace_d := OptTrace(IC, root, x_word, x_word, z_word, k);
+    printf "B4_cell2: trace(d) = %o\n", trace_d;
+    if trace_d ne 0 and trace_x ne 0 then
+        printf "B4_cell2: dim = %o\n", trace_d / trace_x;
+    else
+        printf "B4_cell2: a trace is zero\n";
+    end if;
+
+    // Cell 3 (a-value 2)
+    printf "=== B4 Cell 3 (a-value 2) ===\n";
+    x_word := [3,4];
+    z_word := [1,4];
+    k := 2;
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "B4_cell3: trace(x) = %o\n", trace_x;
+    trace_d := OptTrace(IC, root, x_word, x_word, z_word, k);
+    printf "B4_cell3: trace(d) = %o\n", trace_d;
+    if trace_d ne 0 and trace_x ne 0 then
+        printf "B4_cell3: dim = %o\n", trace_d / trace_x;
+    else
+        printf "B4_cell3: a trace is zero\n";
+    end if;
+
+    // Cell 5 (a-value 4)
+    printf "=== B4 Cell 5 (a-value 4) ===\n";
+    x_word := [2,3,4,3];
+    z_word := [3,4,3,4];
+    k := 4;
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "B4_cell5: trace(x) = %o\n", trace_x;
+    trace_d := OptTrace(IC, root, x_word, x_word, z_word, k);
+    printf "B4_cell5: trace(d) = %o\n", trace_d;
+    if trace_d ne 0 and trace_x ne 0 then
+        printf "B4_cell5: dim = %o\n", trace_d / trace_x;
+    else
+        printf "B4_cell5: a trace is zero\n";
+    end if;
+
+    // Cell 8 (a-value 6)
+    printf "=== B4 Cell 8 (a-value 6) ===\n";
+    x_word := [4,3,2,1];
+    z_word := [3,2,3,1,2,3];
+    k := 6;
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "B4_cell8: trace(x) = %o\n", trace_x;
+    trace_d := OptTrace(IC, root, x_word, x_word, z_word, k);
+    printf "B4_cell8: trace(d) = %o\n", trace_d;
+    if trace_d ne 0 and trace_x ne 0 then
+        printf "B4_cell8: dim = %o\n", trace_d / trace_x;
+    else
+        printf "B4_cell8: a trace is zero\n";
+    end if;
+
+    // Cell 9 (a-value 9)
+    printf "=== B4 Cell 9 (a-value 9) ===\n";
+    x_word := [3,4];
+    z_word := [2,1,2,3,2,4,3,4,2,3,4,1,2];
+    k := 9;
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "B4_cell9: trace(x) = %o\n", trace_x;
+    trace_d := OptTrace(IC, root, x_word, x_word, z_word, k);
+    printf "B4_cell9: trace(d) = %o\n", trace_d;
+    if trace_d ne 0 and trace_x ne 0 then
+        printf "B4_cell9: dim = %o\n", trace_d / trace_x;
+    else
+        printf "B4_cell9: a trace is zero\n";
+    end if;
+
+    T := Time(T);
+    S := GetMaximumMemoryUsage();
+    printf "B4: Time = %o, Space = %o\n\n", T, S;
+end procedure;
+
+//============================================================================
+// D4: d = 143, x = 2341, Cell 6 (a-value 3)
+//============================================================================
+procedure D4_trace()
+    ResetMaximumMemoryUsage();
+    T := Time();
+
+    cartanMat := CartanMatrix("D4");
+    W := CoxeterGroup(GrpFPCox, cartanMat);
+    B := BSCategory(cartanMat, W);
+    FR := B`FR;
+
+    HAlg := IHeckeAlgebra(W);
+    C := CanonicalBasis(HAlg);
+
+    act := function(w)
+        return FActionByElt(B, w);
+    end function;
+
+    IC := CreateOptIdemCollection(B, C, act);
+
+    x_word := [2,3,4,1];
+    xdual_word := [2,3,4,1];
+    z_word := [1,4,3];
+    root := (5/2)*FR.1 + 4*FR.2 + (7/2)*FR.3 + (3/2)*FR.4;
+    k := 3;
+
+    full_word := x_word cat xdual_word;
+    z_elt := W ! z_word;
+    degree := -k;
+    subexps := SubexpressionsEvaluatingTo(W, full_word, z_elt);
+    candidates := [e : e in subexps | DeodharDefect(W, full_word, e) eq degree];
+    printf "D4: Found %o candidate subexpressions\n", #candidates;
+
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "D4: trace(x) = %o\n", trace_x;
+
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    printf "D4: trace(d) = %o\n", trace_d;
+
+    if trace_d ne 0 and trace_x ne 0 then
+        dim := trace_d / trace_x;
+        printf "D4: dim = %o\n", dim;
+    else
+        printf "D4: a trace is zero, cannot compute dimension\n";
+    end if;
+
+    T := Time(T);
+    S := GetMaximumMemoryUsage();
+    printf "D4: Time = %o, Space = %o\n\n", T, S;
+end procedure;
+
+//============================================================================
+// D5: d = 1535435, x = 234531, Cell 10 (a-value 7)
+//============================================================================
+procedure D5_trace()
+    ResetMaximumMemoryUsage();
+    T := Time();
+
+    cartanMat := CartanMatrix("D5");
+    W := CoxeterGroup(GrpFPCox, cartanMat);
+    B := BSCategory(cartanMat, W);
+    FR := B`FR;
+
+    HAlg := IHeckeAlgebra(W);
+    C := CanonicalBasis(HAlg);
+
+    act := function(w)
+        return FActionByElt(B, w);
+    end function;
+
+    IC := CreateOptIdemCollection(B, C, act);
+
+    x_word := [2,3,4,5,3,1];
+    xdual_word := [2,3,4,5,3,1];
+    z_word := [1,5,3,5,4,3,5];
+    root := (17/2)*FR.1 + 12*FR.2 + (19/2)*FR.3 + 7*FR.4 + (5/2)*FR.5;
+    k := 7;
+
+    full_word := x_word cat xdual_word;
+    z_elt := W ! z_word;
+    degree := -k;
+    subexps := SubexpressionsEvaluatingTo(W, full_word, z_elt);
+    candidates := [e : e in subexps | DeodharDefect(W, full_word, e) eq degree];
+    printf "D5: Found %o candidate subexpressions\n", #candidates;
+
+    trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
+    printf "D5: trace(x) = %o\n", trace_x;
+
+    trace_d := OptTrace(IC, root, x_word, xdual_word, z_word, k);
+    printf "D5: trace(d) = %o\n", trace_d;
+
+    if trace_d ne 0 and trace_x ne 0 then
+        dim := trace_d / trace_x;
+        printf "D5: dim = %o\n", dim;
+    else
+        printf "D5: a trace is zero, cannot compute dimension\n";
+    end if;
+
+    T := Time(T);
+    S := GetMaximumMemoryUsage();
+    printf "D5: Time = %o, Space = %o\n\n", T, S;
+end procedure;
