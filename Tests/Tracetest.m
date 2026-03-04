@@ -556,7 +556,7 @@ procedure H4_middle_19_trace()
     trace_x3 := OptTrace(IC, root, x3_word, z_word, x3_word, k : Exprs := [expr_x3]);
     printf "H4_middle_19: trace(x3) = %o\n", trace_x3;
 
-    trace_d := OptTrace(IC, root, x3_word, x3dual_word, z_word k : Exps := [expr_d]);
+    trace_d := OptTrace(IC, root, x3_word, xdual3_word, z_word, k : Exps := [expr_d]);
     printf "H4_middle_19: trace(d) = %o\n", trace_d;
 
 
@@ -643,9 +643,9 @@ procedure B4_trace()
     end function;
 
     IC := CreateOptIdemCollection(B, C, act);
-    root := (9/2)*FR.1 + 4*FR.2 + (7/2)*FR.3 + (3/2)*FR.4;
+    root := 7/2*FR.1 + 6*FR.2 + 15/2*FR.3 + 8*FR.4;
 
-    // Cell 2 (a-value 1)
+    // Cell 2 (a-value 1): d = 3, w = 343
     printf "=== B4 Cell 2 (a-value 1) ===\n";
     x_word := [3,4,3];
     z_word := [3];
@@ -660,9 +660,9 @@ procedure B4_trace()
         printf "B4_cell2: a trace is zero\n";
     end if;
 
-    // Cell 3 (a-value 2)
+    // Cell 3 (a-value 2): d = 14, w = 1434
     printf "=== B4 Cell 3 (a-value 2) ===\n";
-    x_word := [3,4];
+    x_word := [1,4,3,4];
     z_word := [1,4];
     k := 2;
     trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
@@ -675,9 +675,9 @@ procedure B4_trace()
         printf "B4_cell3: a trace is zero\n";
     end if;
 
-    // Cell 5 (a-value 4)
+    // Cell 5 (a-value 4): d = 3434, w = 34342343
     printf "=== B4 Cell 5 (a-value 4) ===\n";
-    x_word := [2,3,4,3];
+    x_word := [3,4,3,4,2,3,4,3];
     z_word := [3,4,3,4];
     k := 4;
     trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
@@ -690,9 +690,9 @@ procedure B4_trace()
         printf "B4_cell5: a trace is zero\n";
     end if;
 
-    // Cell 8 (a-value 6)
+    // Cell 8 (a-value 6): d = 323123, w = 3231234321
     printf "=== B4 Cell 8 (a-value 6) ===\n";
-    x_word := [4,3,2,1];
+    x_word := [3,2,3,1,2,3,4,3,2,1];
     z_word := [3,2,3,1,2,3];
     k := 6;
     trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
@@ -705,9 +705,9 @@ procedure B4_trace()
         printf "B4_cell8: a trace is zero\n";
     end if;
 
-    // Cell 9 (a-value 9)
+    // Cell 9 (a-value 9): d = 2123243423412, w = 212324342341234
     printf "=== B4 Cell 9 (a-value 9) ===\n";
-    x_word := [3,4];
+    x_word := [2,1,2,3,2,4,3,4,2,3,4,1,2,3,4];
     z_word := [2,1,2,3,2,4,3,4,2,3,4,1,2];
     k := 9;
     trace_x := OptTrace(IC, root, x_word, z_word, x_word, k);
@@ -726,7 +726,7 @@ procedure B4_trace()
 end procedure;
 
 //============================================================================
-// D4: d = 143, x = 2341, Cell 6 (a-value 3)
+// D4: d = 143, w = 1432341, Cell 6 (a-value 3)
 //============================================================================
 procedure D4_trace()
     ResetMaximumMemoryUsage();
@@ -746,10 +746,10 @@ procedure D4_trace()
 
     IC := CreateOptIdemCollection(B, C, act);
 
-    x_word := [2,3,4,1];
-    xdual_word := [2,3,4,1];
+    x_word := [1,4,3,2,3,4,1];
+    xdual_word := [1,4,3,2,3,4,1];
     z_word := [1,4,3];
-    root := (5/2)*FR.1 + 4*FR.2 + (7/2)*FR.3 + (3/2)*FR.4;
+    root := 3*FR.1+5*FR.2+3*FR.3+3*FR.4;
     k := 3;
 
     full_word := x_word cat xdual_word;
@@ -778,7 +778,7 @@ procedure D4_trace()
 end procedure;
 
 //============================================================================
-// D5: d = 1535435, x = 234531, Cell 10 (a-value 7)
+// D5: d = 1535435, w = 1535435234531, Cell 10 (a-value 7)
 //============================================================================
 procedure D5_trace()
     ResetMaximumMemoryUsage();
@@ -798,10 +798,10 @@ procedure D5_trace()
 
     IC := CreateOptIdemCollection(B, C, act);
 
-    x_word := [2,3,4,5,3,1];
-    xdual_word := [2,3,4,5,3,1];
+    x_word := [1,5,3,5,4,3,5,2,3,4,5,3,1];
+    xdual_word := [1,5,3,5,4,3,5,2,3,4,5,3,1];
     z_word := [1,5,3,5,4,3,5];
-    root := (17/2)*FR.1 + 12*FR.2 + (19/2)*FR.3 + 7*FR.4 + (5/2)*FR.5;
+    root := 4*FR.1+7*FR.2+9*FR.3+5*FR.4+5*FR.5;
     k := 7;
 
     full_word := x_word cat xdual_word;
